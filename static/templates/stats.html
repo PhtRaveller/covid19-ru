@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% set stats_width = 12 // stats|length %}
+{% block stats %}
+<div class="container">
+    <div class="row">
+        {% for stat in stats %}
+        <div class="col-md-{{ stats_width }} col-sm-6 mb-4 mt-2">
+                <h3 class="main-card custom-font {{ stat['color_class'] }}">
+                    <sup><i class="fa {{ stat['icon_class']}}"></i></sup>
+                    {{ stat["value"] }}<sup>{{ "%+d" | format(stat["diff"]) }}</sup>
+                </h3>
+                <h4 class="main-card">{{ stat['text'] }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

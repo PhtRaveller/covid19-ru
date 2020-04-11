@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+		Пандемия CoVID-19 в России
+	</title>
+
+    <meta name="description" content="Dashboard for CoVID-19 pandemic in Russia">
+    <meta name="author" content="Gleb Ivashkevich">
+    <link rel="icon" type="image/svg" href="static/virus-solid.svg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-fixed-width navbar-white ">
+          <a href="#" class="navbar-brand"><h3>CoVID-19@{{ city }}</h3></a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-virus"  aria-hidden="true" style="color: #073763;"></i></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+              {% for main_link in main_links %}
+              <a href="{{ main_link['link'] }}" class="nav-item nav-link">{{ main_link["name"] }}</a>
+              {% endfor %}
+              {% for secondary_link in secondary_links %}
+              <a href="{{ secondary_link['link'] }}" class="nav-item nav-link {% if loop.index==1 %}ml-auto{% endif %}">{{ secondary_link["name"] }}</a>
+              {% endfor %}
+          </div>
+      </nav>
+    </div>
+    {% block stats %}{% endblock %}
+    {% block content %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
