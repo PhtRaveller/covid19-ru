@@ -1,0 +1,58 @@
+{% extends "stats.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-2">
+            {{ map|safe}}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <h5>Статистика случаев</h5>
+                <ul class="nav nav-fill tab-link ml-auto flex-column" id="cases_tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ml-auto align-middle pt-0 text-right" data-toggle="tab" id="linear_cases_tab" href="#linear_cases">Линейная шкала</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link align-middle pt-0 text-right" data-toggle="tab" id="log_cases_tab" href="#log_cases">Логарифмическая шкала</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="cases">
+                <div class="tab-pane fade show active" id="linear_cases">
+                    {{ cases|safe }}
+                </div>
+                <div class="tab-pane fade" id="log_cases">
+                    {{ cases_log|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <h5>Тестирование</h5>
+                <ul class="nav nav-fill tab-link ml-auto flex-column" id="swabs_tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active ml-auto align-middle pt-0 text-right" data-toggle="tab" id="linear_swabs_tab" href="#linear_swabs">Линейная шкала</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link align-middle pt-0 text-right" data-toggle="tab" id="log_swabs_tab" href="#log_swabs">Логарифмическая шкала</a>
+                    </li>
+                </ul>
+                </div>
+                <div class="tab-content" id="swabs">
+                    <div class="tab-pane fade show active" id="linear_swabs">
+                        {{ swabs|safe }}
+                    </div>
+                    <div class="tab-pane fade" id="log_swabs">
+                        {{ swabs_log|safe }}
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
+{{ bokeh_script|safe }}
+{% endblock %}

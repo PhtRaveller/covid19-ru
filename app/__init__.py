@@ -1,9 +1,9 @@
 from flask import Flask
 
-app = Flask(__name__,
+covid_app = Flask(__name__,
             static_folder="../static",
             template_folder="../static/templates")
-app.jinja_env.auto_reload = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+covid_app.jinja_env.auto_reload = True
+covid_app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 from app import routes

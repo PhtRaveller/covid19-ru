@@ -27,11 +27,3 @@ attrs:
 
   Grid:
     grid_line_alpha: 0.4
-
-  Slider:
-    sizing_mode: 'stretch_width'
-  
-  DataTable:
-    max_width: 550
-    width_policy: 'min'
-    height_policy: 'max'

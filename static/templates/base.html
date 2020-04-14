@@ -14,31 +14,95 @@
     <link rel="icon" type="image/svg" href="static/virus-solid.svg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+    <link href="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.1.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/main.css">
   </head>
   <body>
     <div class="container">
-      <nav class="navbar navbar-expand-lg fixed-top navbar-fixed-width navbar-white ">
-          <a href="#" class="navbar-brand"><h3>CoVID-19@{{ city }}</h3></a>
-          
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span><i class="fas fa-virus"  aria-hidden="true" style="color: #073763;"></i></span>
-          </button>
+      <div class="container">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-fixed-width navbar-white ">
+            <a href="#" class="navbar-brand"><h3>CoVID-19@{{ city }}</h3></a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                  <span><i class="fas fa-virus"  aria-hidden="true" style="color: #073763;"></i></span>
+            </button>
 
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-              {% for main_link in main_links %}
-              <a href="{{ main_link['link'] }}" class="nav-item nav-link">{{ main_link["name"] }}</a>
-              {% endfor %}
-              {% for secondary_link in secondary_links %}
-              <a href="{{ secondary_link['link'] }}" class="nav-item nav-link {% if loop.index==1 %}ml-auto{% endif %}">{{ secondary_link["name"] }}</a>
-              {% endfor %}
-          </div>
-      </nav>
-    </div>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                {% for main_link in main_links %}
+                <a href="{{ main_link.link }}" class="nav-item nav-link">{{ main_link.name }}</a>
+                {% endfor %}
+                {% for secondary_link in secondary_links %}
+                <a href="{{ secondary_link.link }}" class="nav-item nav-link {% if loop.index==1 %}ml-auto{% endif %}">{{ secondary_link.name }}</a>
+                {% endfor %}
+            </div>
+        </nav>
+      </div>
     {% block stats %}{% endblock %}
     {% block content %}{% endblock %}
+    <div class="container mt-5 pb-0">
+      <nav class="navbar footer">
+        <div class="row" style="width: 100%;">
+          <div class="col-sm-4">
+            <h6 class="mt-2 mb-0 footer-link">Источники данных</h6>
+            <ul class="list-unstyled ml-0 mt-2">
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://xn--80aesfpebagmfblc0a.xn--p1ai/">
+                  стопкоронавирус.рф <sup><i class="fas fa-external-link-alt"></i></sup>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://covid19faq.ru/">
+                  covid19faq.ru <sup><i class="fas fa-external-link-alt"></i></sup>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://covid19.rosminzdrav.ru/">
+                  Минздрав России <sup><i class="fas fa-external-link-alt"></i></sup>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://www.rospotrebnadzor.ru/region/korono_virus/epid.php">
+                  Роспотребнадзор <sup><i class="fas fa-external-link-alt"></i></sup>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://t.me/COVID2019_official">
+                  Оперштаб Москвы <sup><i class="fab fa-telegram-plane"></i></sup>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link footer-link pl-0 mb-0"  target="blank" href="https://t.me/DtRoad">
+                  Пресс-служба Дептранса Москвы <sup><i class="fab fa-telegram-plane"></i></sup>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-4">
+              <h6 class="mt-2 mb-0 footer-link">Инструменты</h6>
+              <ul class="list-unstyled ml-0 mt-2">
+                <li>
+                  <a class="nav-link footer-link pl-0 mb-0" href="https://xn--80aesfpebagmfblc0a.xn--p1ai/">
+                    стопкоронавирус.рф <sup><i class="fas fa-external-link-alt"></sup></i>
+                  </a>
+                </li>
+                <li>
+                    <a class="nav-link footer-link pl-0 mb-0" target="blank" href="https://xn--80aesfpebagmfblc0a.xn--p1ai/">
+                      стопкоронавирус.рф <sup><i class="fas fa-external-link-alt"></sup></i>
+                    </a>
+                  </li>
+              </ul>
+            </div>
+          <div class="col-sm-4">
+              <a href="https://github.com/" target="blank" class="nav-link footer-link mt-2 pl-0 pt-0" style="line-height: 1.2;">
+                Исходный код <i class="fab fa-github"></i>
+              </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.1.min.js" crossorigin="anonymous"></script>
   </body>
 </html>
