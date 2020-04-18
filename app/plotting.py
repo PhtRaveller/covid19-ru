@@ -8,7 +8,7 @@ from app import constants as cts
 
 
 CASES_TOOLTIP = """<div class="plot-tooltip">
-    <h4>Россия</h4>
+    <h4>{city}</h4>
     <div>
         <span style="font-weight: bold;">Дата: </span>@date_str
     </div>"""
@@ -35,7 +35,7 @@ MAP_TOOLTIP = """
 """
 
 
-def plot_region(ds, log_y=False, plot_cols=cts.CATEGORIES[:3],
+def plot_region(ds, city, log_y=False, plot_cols=cts.CATEGORIES[:3],
                 legend_map=cts.LEGEND_MAP, color_ramp=cts.COLOR_RAMP,
                 alpha=0.7, line_width=2, ms=8, bar=False, bar_width=cfg.DATE_WIDTH,
                 height=cfg.MAX_MAIN_HEIGHT, width=cfg.MAX_MAIN_WIDTH):
@@ -72,10 +72,11 @@ def plot_region(ds, log_y=False, plot_cols=cts.CATEGORIES[:3],
                           alpha=alpha, size=ms, fill_color="white",
                           legend_label=legend_map[ci])
 
-        local_tooltip = CASES_TOOLTIP_FOOTER.format(value_type=legend_map[ci].capitalize(),
+        tooltip_header = CASES_TOOLTIP.format(city=city)
+        tooltip_footer = CASES_TOOLTIP_FOOTER.format(value_type=legend_map[ci].capitalize(),
                                                     col=cl)
         p.add_tools(HoverTool(renderers=[cr],
-                              tooltips=CASES_TOOLTIP + local_tooltip,
+                              tooltips=tooltip_header + tooltip_footer,
                               formatters={"date": "datetime"},
                               toggleable=False))
 

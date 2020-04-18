@@ -4,9 +4,19 @@ body {
     font-weight: 300;
     padding-top: 90px;
 }
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
     color: #073763;
     margin-bottom: 0;
+}
+.medium-font {
+    font-size: 1rem;
+}
+dt {
+    font-weight: 500;
+}
+.section {
+    padding-top: 90px;
+    margin-top: -90px;
 }
 h3.main-card {
     font-weight: 600;

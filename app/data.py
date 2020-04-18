@@ -32,8 +32,41 @@ def get_newest_data():
     return data.sort_index()
 
 
-def get_region_data(all_data, region):
-    """Extract data for `region`. Note, that `all_data` is assumed to be sorted by date in ascending order."""
+def get_region_data(df, region):
+    """Get data. along with diffs for `region`."""
 
-    region_data = all_data.iloc[-1][region]
-    region_diff_data = all_data.diff().iloc[-1][region]
+    # Get data for this region
+    country_data = df[region]
+
+    # Normalize swabs
+    country_data["swabs"] = country_data["swabs"] / 1000
+
+    country_data = (country_data
+                    .join(country_data
+                          .diff()
+                          .rename(lambda cl: f"{cl}_diff", axis=1)))
+    return country_data, country_data.iloc[-1].to_dict()
+
+
+def get_rendered_page(page_name):
+    """Get prerendered page, if available."""
+
+    rendered = None
+
+    root_dir = pathlib.Path(__file__).parent.parent
+    filename = root_dir.joinpath(cfg.RENDERED_DIR).joinpath(f"{page_name}.html")
+
+    if filename.exists():
+        with open(filename, "r") as f:
+            rendered = f.read()
+    return rendered
+
+
+def save_rendered_page(page_name, rendered):
+    """Save prerendered page."""
+
+    root_dir = pathlib.Path(__file__).parent.parent
+    filename = root_dir.joinpath(cfg.RENDERED_DIR).joinpath(f"{page_name}.html")
+
+    with open(filename, "w") as f:
+        f.write(rendered)
