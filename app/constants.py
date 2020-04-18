@@ -12,5 +12,18 @@ CATEGORIES_STYLES = {
     }
 
 LEGEND_MAP = ["выявлено", "умерло", "выздоровело"]
-COLOR_RAMP = ["#073763", "#990800", "#38761d"]
+COLOR_RAMP = ["#073763", "#990800", "#38761d", "#02607a", "#b02a09", "#658c1c"]
 MAP_PALLETE = Reds[9]
+
+# Moscow specific
+# Transport
+PUBLIC_TR_COLS = [
+    {"key": "metro", "name": "метро"},
+    {"key": "landlines", "name": "наземный транспорт"},
+    {"key": "intercity trains", "name": "электрички"}
+    ]
+PRIVATE_TR_COLS = [
+    {"key": "taxi", "name": "такси"},
+    {"key": "car sharing", "name": "каршеринг"},
+    {"key": "cars", "name": "личные автомобили"}
+    ]

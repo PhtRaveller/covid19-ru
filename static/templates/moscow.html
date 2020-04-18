@@ -1,43 +1,12 @@
 {% extends "stats.html" %}
 {% block content %}
-<div class="container">
-    <div class="row mt-5 mb-2">
+<div class="container mt-5 mb-4">
+    <div class="row">
         <div class="col-sm-6">
             {{ cases|safe }}
         </div>
         <div class="col-sm-6">
             {{ cases_log|safe }}
-        </div>
-    </div>
-</div>
-<div class="container section" id="transport">
-    <div class="row footer mt-2">
-        <div class="col-sm-4 ml-auto">
-            <h5 class="mt-3">Транспорт</h5>
-            <dl class="row mt-3 medium-font">
-                <dt class="col-sm-4">
-                    Метро
-                </dt>
-                <dd class="col-sm-8">
-                    -85%
-                </dd>
-                <dt class="col-sm-4">
-                    Наземный транспорт
-                </dt>
-                <dd class="col-sm-8">
-                    -65%
-                </dd>
-                <dt class="col-sm-4">
-                    Такси
-                </dt>
-                <dd class="col-sm-8">
-                    -65%
-                </dd>
-            </dl>
-          </div>
-        </div>
-        <div class="col-sm-8">
-            {{ transport|safe }}
         </div>
     </div>
 </div>
@@ -52,8 +21,34 @@
             <h6 class="mt-2">Коммунарка</h6>
         </div>
         <div class="col-sm-8">
-            
         </div>
+    </div>
+</div>
+<div class="container section" id="transport">
+    <div class="row footer mt-2">
+        <div class="col-12">
+            <h5 class="mt-3">Транспорт</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            {{ public_transport|safe }}
+        </div>
+        <div class="col-sm-4">
+            {{ private_transport|safe }}
+        </div>
+        <div class="col-sm-4">
+            <dl class="row mt-3 medium-font">
+                {% for tr_stat in tr_stats %}
+                <dt class="col-sm-6 mt-2">
+                    {{ tr_stat.name }}
+                </dt>
+                <dd class="col-sm-6 mt-2">
+                    {{ "%.f" | format(tr_stat.value) }} %
+                </dd>
+                {% endfor %}
+            </dl>
+          </div>
     </div>
 </div>
 {{ bokeh_script|safe }}

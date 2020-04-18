@@ -1,8 +1,8 @@
-from datetime import timedelta
 import pathlib
 import pandas as pd
 from bokeh.themes import Theme
 
+DATA_DIR = "data"
 GEODATA = "data/borders.geojson"
 CSVDATA = "data/covid_stats.csv"
 RENDERED_DIR = "rendered"

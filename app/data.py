@@ -70,3 +70,29 @@ def save_rendered_page(page_name, rendered):
 
     with open(filename, "w") as f:
         f.write(rendered)
+
+
+def get_data_by_key(keys, ext=".csv", pandas=True, dt_cols=["date"], set_index=None, sort_by=None):
+    """Read data from disk."""
+
+    root_dir = pathlib.Path(__file__).parent.parent.joinpath(cfg.DATA_DIR)
+    filename = root_dir.joinpath(*keys).with_suffix(ext)
+
+    if filename.exists() and pandas:
+
+        data = pd.read_csv(filename)
+
+        for cl in dt_cols:
+            data[cl] = pd.to_datetime(data[cl], dayfirst=True)
+
+        if sort_by:
+            data = data.sort_values(sort_by)
+        if set_index is not None and set_index in data.columns:
+            data.set_index(set_index, inplace=True)
+        return data
+    elif filename.exists():
+        with open(filename, "r") as f:
+            data = f.read()
+        return data
+    else:
+        return None

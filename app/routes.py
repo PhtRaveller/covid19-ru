@@ -110,12 +110,40 @@ def moscow():
     # Cases plots
     cases_plot = plotting.plot_region(moscow_data_full, city)
     cases_log_plot = plotting.plot_region(moscow_data_full, city, log_y=True)
+    transport_data = data.get_data_by_key(["moscow", "transport"], sort_by="date", set_index="date")
 
-    script, div = components({"cases": cases_plot, "cases_log": cases_log_plot})
+    public_tr_plot = plotting.plot_region(transport_data / 100., city,
+                                          plot_cols=[tr["key"] for tr in cts.PUBLIC_TR_COLS],
+                                          legend_map=[tr["name"] for tr in cts.PUBLIC_TR_COLS],
+                                          legend_loc="top_right",
+                                          dt_fmt="%d-%m-%Y %H:%S",
+                                          fmt="{0 %}",
+                                          set_yticks=True,
+                                          width_policy="max",
+                                          width=cfg.MAX_MAIN_WIDTH * 2)
+    private_tr_plot = plotting.plot_region(transport_data / 100., city,
+                                           plot_cols=[tr["key"] for tr in cts.PRIVATE_TR_COLS],
+                                           legend_map=[tr["name"] for tr in cts.PRIVATE_TR_COLS],
+                                           legend_loc="top_right",
+                                           dt_fmt="%d-%m-%Y %H:%S",
+                                           fmt="{0 %}",
+                                           set_yticks=True,
+                                           width_policy="max",
+                                           width=cfg.MAX_MAIN_WIDTH * 2)
+    transport_data_latest = transport_data.iloc[-1].to_dict()
+    tr_stats = []
+
+    for category in cts.PUBLIC_TR_COLS + cts.PRIVATE_TR_COLS:
+        tr_stats.append({"name": category["name"].capitalize(),
+                         "value": transport_data_latest[category["key"]]})
+
+    script, div = components({"cases": cases_plot, "cases_log": cases_log_plot,
+                              "public_transport": public_tr_plot, "private_transport": private_tr_plot})
 
     return render_template("moscow.html", city=city,
                            main_links=main_links,
                            secondary_links=secondary_links,
                            stats=stats,
+                           tr_stats=tr_stats,
                            bokeh_script=script,
                            **div)
