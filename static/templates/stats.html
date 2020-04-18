@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% set stats_width = 12 // stats|length %}
-{% macro embed(obj) -%}
-    <div class="bk-root" id="{{ obj.elementid }}"{% if obj.id %} data-root-id="{{ obj.id }}"{% endif %}></div>
-{%- endmacro %}
 {% block stats %}
 <div class="container">
     <div class="row">
