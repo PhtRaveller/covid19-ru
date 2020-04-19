@@ -1,4 +1,4 @@
-date,total,covid+_deaths,total_deaths,admissions,discharges,covid+_discharges,pneumonia,covid+,covid+_pregnant,covid+?,covid+_pneumonia,covid+_icu,total_icu,covid+_vent,total_vent,total_vent_ratio,total_icu_ratio
+date,total,covid+_deaths,total_deaths,admissions,discharges,covid_discharges,pneumonia,covid,covid_pregnant,covid_suspected,covid_pneumonia,covid_icu,total_icu,covid_vent,total_vent,total_vent_ratio,total_icu_ratio
 29.03.2020,183,,,139,0,,131,25,,,,,31,,0,0.00,16.94
 30.03.2020,313,,,122,0,,198,77,,,,,,,,0.00,0.00
 31.03.2020,488,,,174,2,,312,106,,,,,,,,0.00,0.00
@@ -20,3 +20,4 @@ date,total,covid+_deaths,total_deaths,admissions,discharges,covid+_discharges,pn
 16.04.2020,1492,,,145,124,,1431,501,54,,,,126,,66,4.42,8.45
 17.04.2020,1487,,,150,130,,1431,591,25,,,,122,,72,4.84,8.20
 18.04.2020,1440,,,170,184,,1429,677,26,,,,133,,70,4.86,9.24
+19.04.2020,1485,,,153,108,,1461,690,54,,,,144,,73,4.92,9.70

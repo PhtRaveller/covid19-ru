@@ -1,4 +1,4 @@
-date,total,covid+_deaths,total_deaths,admissions,discharges,covid+_discharges,pneumonia,covid+,covid+?,covid+_pneumonia,covid+_icu,total_icu,covid+_vent,total_vent,total_vent_ratio,total_icu_ratio
+date,total,covid+_deaths,total_deaths,admissions,discharges,covid_discharges,pneumonia,covid,covid_suspected,covid_pneumonia,covid_icu,total_icu,covid_vent,total_vent,total_vent_ratio,total_icu_ratio
 26.03.2020,48,,,29,,,31,0,,,,,,,0,0
 27.03.2020,92,,,44,,,53,,,,,,,,0.00,0.00
 28.03.2020,125,,,33,,,60,,,,,,,,0.00,0.00
