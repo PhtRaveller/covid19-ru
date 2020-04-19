@@ -1,6 +1,5 @@
 """Various data utilities."""
 
-import os
 import pathlib
 import pandas as pd
 import geopandas as gpd
@@ -96,3 +95,9 @@ def get_data_by_key(keys, ext=".csv", pandas=True, dt_cols=["date"], set_index=N
         return data
     else:
         return None
+
+
+def capitalize(s):
+    """Capitalize only first letter."""
+
+    return s[0].upper() + s[1:]

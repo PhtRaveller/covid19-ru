@@ -59,6 +59,12 @@ h5.main-card {
 .bk {
     font-family: "Montserrat" !important;
 }
+.bk-tooltip {
+    font-family: "Montserrat" !important;
+}
+.bk-tooltip>div:not(:first-child) {
+    display:none;
+}
 .plot-tooltip {
     margin: 10px;
 }

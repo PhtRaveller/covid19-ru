@@ -16,13 +16,24 @@
             <h5 class="mt-3">Больницы</h5>
         </div>
     </div>
-    <div class="row footer mt-2">
-        <div class="col-sm-4">
-            <h6 class="mt-2">Коммунарка</h6>
+    {% for hospital in hospitals %}
+    <div class="row mt-4">
+        <div class="col-sm-3">
+            <h5><a class="nav-link pl-0 pt-0" target="blank" href="{{ hospital.link }}">{{ hospital.name }}</a></h5>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-4 pb-0">
+            <span class="blue-font" style="font-weight: 400;">Главврач:</span> {{ hospital.cmo }}
+        </div>
+        <div class="col-sm-4 pb-0">
+            <span class="blue-font" style="font-weight: 400;">Адрес:</span> {{ hospital.address }}
         </div>
     </div>
+    <div class="row mt-2 mb-2 pb-5" {% if not loop.last %} style="border-bottom: 0.05rem solid #07376333;" {% endif %}>
+        <div class="col-sm-12 ml-auto">
+            {{ hospital.plot|safe }}
+        </div>
+    </div>
+    {% endfor %}
 </div>
 <div class="container section" id="transport">
     <div class="row footer mt-2">

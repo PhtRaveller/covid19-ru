@@ -27,3 +27,6 @@ attrs:
 
   Grid:
     grid_line_alpha: 0.4
+
+  Legend:
+    label_text_font: 'Montserrat'
