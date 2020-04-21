@@ -126,6 +126,7 @@ def plot_region(ds, city,
 def plot_swabs(ds, city, start_date=cts.SWABS_START_DATE, dt_col="date",
                plot_cols=cts.SWABS_CATEGORIES, legend_map=cts.SWABS_LEGEND_MAP,
                x_col="date",
+               range_padding=0.05,
                y_range=cts.SWABS_RANGE,
                alpha_factor=cts.SWABS_ALPHA,
                size_factor=cts.SWABS_SIZE,
@@ -142,23 +143,38 @@ def plot_swabs(ds, city, start_date=cts.SWABS_START_DATE, dt_col="date",
     tools = "save"
 
     # Preparing data
-    ds = ds.reset_index()
+    ds = ds.loc[start_date:].reset_index()
     ds["date_str"] = ds[dt_col].dt.strftime(dt_fmt)
+    x_range_raw = (ds[x_col].min(), ds[x_col].max())
+
+    if y_range is None:
+        y_range_raw = (ds["swabs_clean"].min(), ds["swabs_clean"].max())
+    else:
+        y_range_raw = y_range
+
+    if range_padding is not None:
+        x_range_width = x_range_raw[1] - x_range_raw[0]
+        y_range_width = y_range_raw[1] - y_range_raw[0]
+        x_range = (x_range_raw[0] - range_padding * x_range_width, x_range_raw[1] + range_padding * x_range_width)
+        y_range = (y_range_raw[0] - range_padding * y_range_width, y_range_raw[1] + range_padding * y_range_width)
+    else:
+        x_range = x_range_raw
+        y_range = y_range_raw
 
     # Creating figures
     if log_y:
         if x_col == dt_col:
-            p = figure(x_axis_type="datetime", y_range=y_range,y_axis_type="log", tools=tools)
+            p = figure(x_axis_type="datetime", x_range=x_range, y_range=y_range, y_axis_type="log", tools=tools)
             p.xaxis[0].formatter = DatetimeTickFormatter(days=['%d %b'])
         else:
-            p = figure(y_range=y_range, y_axis_type="log", tools=tools)
+            p = figure(x_range=x_range, y_range=y_range, y_axis_type="log", tools=tools)
             p.xaxis[0].formatter = NumeralTickFormatter(format="0a")
     else:
         if x_col == dt_col:
-            p = figure(x_axis_type="datetime", y_range=y_range, tools=tools)
+            p = figure(x_axis_type="datetime", x_range=x_range, y_range=y_range, tools=tools)
             p.xaxis[0].formatter = DatetimeTickFormatter(days=['%d %b'])
         else:
-            p = figure(y_range=y_range, tools=tools)
+            p = figure(x_range=x_range, y_range=y_range, tools=tools)
             p.xaxis[0].formatter = NumeralTickFormatter(format="0a")
 
     p.toolbar.logo = None
@@ -176,7 +192,7 @@ def plot_swabs(ds, city, start_date=cts.SWABS_START_DATE, dt_col="date",
     ds["positive"] = ds["total"].shift(delay_factor) / ds["swabs_clean"]
 
     cr = p.circle(x=x_col, y="swabs_clean", size="size",
-                  source=ds[ds["swabs_clean"].notnull()].loc[start_date:],
+                  source=ds[ds["swabs_clean"].notnull()],
                   color="#990800", alpha="alpha",
                   line_color="white")
 
@@ -190,10 +206,10 @@ def plot_swabs(ds, city, start_date=cts.SWABS_START_DATE, dt_col="date",
 
     # Setting axis labels
     if x_col != dt_col:
-        x_label = Label(x=p.x_range.end, y=p.y_range.start, text="выявлено", render_mode='css',
-                        x_offset=350, text_font_size="10pt")
-        y_label = Label(x=p.x_range.start, y=p.y_range.end, text="тестов всего", render_mode='css',
-                        text_baseline="top", x_offset=-10, text_font_size="10pt")
+        x_label = Label(x=x_range_raw[1], y=y_range_raw[0], text="выявлено", render_mode='css',
+                        text_font_size="10pt", text_align="right", text_baseline="middle")
+        y_label = Label(x=x_range_raw[0], y=y_range_raw[1], text="тестов всего", render_mode='css',
+                        text_baseline="top", text_font_size="10pt")
         p.add_layout(x_label)
         p.add_layout(y_label)
 
