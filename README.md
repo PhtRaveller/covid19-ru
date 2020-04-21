@@ -58,4 +58,4 @@ To run Flask dev server:
 flask run --reload
 ```
 
-There are many options to deploy the app, and Heroku is used at the moment (see `Procfile`). There are no specifics, which prevent this app to be served by any common mechanism for Flask application.
+There are many options to deploy the app, and Heroku is used at the moment (see `Procfile`). There are no specifics, which prevent this app from beaing served by any common mechanism for Flask application.
