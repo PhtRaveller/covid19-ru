@@ -30,3 +30,5 @@ attrs:
 
   Legend:
     label_text_font: 'Montserrat'
+  Label:
+    text_font: 'Montserrat'

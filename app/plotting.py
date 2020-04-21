@@ -1,9 +1,11 @@
+import numpy as np
 from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.models import GeoJSONDataSource
 from bokeh.models import DatetimeTickFormatter, PrintfTickFormatter, NumeralTickFormatter
 from bokeh.models import HoverTool, WheelZoomTool
 from bokeh.models import LogColorMapper
+from bokeh.models import Label
 from app import config as cfg
 from app import constants as cts
 from app import data
@@ -22,7 +24,7 @@ def plot_region(ds, city,
                 xaxis_ticks=None, yrange=None):
     """Make a single region plot."""
 
-    # Setiing tools
+    # Setting tools
     active_zooms = [tool for tool in additional_tools if "zoom" in tool]
 
     if len(active_zooms) != 0:
@@ -49,6 +51,7 @@ def plot_region(ds, city,
                    height_policy=height_policy,
                    plot_width=width, max_width=width,
                    width_policy=width_policy,
+                   active_drag=None,
                    active_scroll=active_scroll)
         p.yaxis[0].formatter = PrintfTickFormatter(format="%7.0f")
     else:
@@ -57,6 +60,7 @@ def plot_region(ds, city,
                    height_policy=height_policy,
                    plot_width=width, max_width=width,
                    width_policy=width_policy,
+                   active_drag=None,
                    active_scroll=active_scroll)
     p.toolbar.logo = None
 
@@ -112,6 +116,90 @@ def plot_region(ds, city,
     if yrange is not None:
         p.y_range.start = yrange[0]
         p.y_range.end = yrange[1]
+
+    # Applying theme
+    doc = curdoc()
+    doc.theme = cfg.THEME
+    return p
+
+
+def plot_swabs(ds, city, start_date=cts.SWABS_START_DATE, dt_col="date",
+               plot_cols=cts.SWABS_CATEGORIES, legend_map=cts.SWABS_LEGEND_MAP,
+               x_col="date",
+               y_range=cts.SWABS_RANGE,
+               alpha_factor=cts.SWABS_ALPHA,
+               size_factor=cts.SWABS_SIZE,
+               delay_factor=cts.SWABS_DELAY,
+               log_y=False, dt_fmt="%d-%m-%Y", fmt="{0,0}", set_yticks=False,
+               color_ramp=cts.COLOR_RAMP, alpha=0.7,
+               line_width=2, ms=8,
+               glyphs={}, alphas={},
+               height=cfg.MAX_MAIN_HEIGHT, height_policy="fit",
+               width=cfg.MAX_MAIN_WIDTH, width_policy="fixed",
+               legend_loc="top_left", xaxis_ticks=None, yrange=None):
+    """Custom plot for swabs."""
+
+    tools = "save"
+
+    # Preparing data
+    ds = ds.reset_index()
+    ds["date_str"] = ds[dt_col].dt.strftime(dt_fmt)
+
+    # Creating figures
+    if log_y:
+        if x_col == dt_col:
+            p = figure(x_axis_type="datetime", y_range=y_range,y_axis_type="log", tools=tools)
+            p.xaxis[0].formatter = DatetimeTickFormatter(days=['%d %b'])
+        else:
+            p = figure(y_range=y_range, y_axis_type="log", tools=tools)
+            p.xaxis[0].formatter = NumeralTickFormatter(format="0a")
+    else:
+        if x_col == dt_col:
+            p = figure(x_axis_type="datetime", y_range=y_range, tools=tools)
+            p.xaxis[0].formatter = DatetimeTickFormatter(days=['%d %b'])
+        else:
+            p = figure(y_range=y_range, tools=tools)
+            p.xaxis[0].formatter = NumeralTickFormatter(format="0a")
+
+    p.toolbar.logo = None
+    p.plot_height = height
+    p.max_height = height
+    p.min_height = height
+    p.height_policy = height_policy
+    p.plot_width = width
+    p.max_width = width
+    p.width_policy = width_policy
+    p.yaxis[0].formatter = NumeralTickFormatter(format="0a")
+
+    ds["alpha"] = (ds["total"].shift(delay_factor) / ds["swabs_clean"]) * alpha_factor
+    ds["size"] = ds["swabs_derived_daily"] / size_factor
+    ds["positive"] = ds["total"].shift(delay_factor) / ds["swabs_clean"]
+
+    cr = p.circle(x=x_col, y="swabs_clean", size="size",
+                  source=ds[ds["swabs_clean"].notnull()].loc[start_date:],
+                  color="#990800", alpha="alpha",
+                  line_color="white")
+
+    p.yaxis[0].formatter = NumeralTickFormatter(format="0a")
+    p.add_tools(HoverTool(renderers=[cr],
+                          tooltips=cts.SWABS_TOOLTIP,
+                          formatters={'date': 'datetime'},
+                          toggleable=False))
+
+    p.toolbar.logo = None
+
+    # Setting axis labels
+    if x_col != dt_col:
+        x_label = Label(x=p.x_range.end, y=p.y_range.start, text="выявлено", render_mode='css',
+                        x_offset=350, text_font_size="10pt")
+        y_label = Label(x=p.x_range.start, y=p.y_range.end, text="тестов всего", render_mode='css',
+                        text_baseline="top", x_offset=-10, text_font_size="10pt")
+        p.add_layout(x_label)
+        p.add_layout(y_label)
+
+    # Setting X-ticker
+    if xaxis_ticks is not None:
+        p.xaxis[0].ticker.desired_num_ticks = xaxis_ticks
 
     # Applying theme
     doc = curdoc()

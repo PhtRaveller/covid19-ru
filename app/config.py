@@ -5,6 +5,8 @@ from bokeh.themes import Theme
 DATA_DIR = "data"
 GEODATA = "data/borders.geojson"
 CSVDATA = "data/covid_stats.csv"
+SWABSDATA = "data/swabs_rpn.csv"
+SWABSDATA_CLEAN = "data/swabs_rpn_clean.csv"
 RENDERED_DIR = "rendered"
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent

@@ -85,3 +85,9 @@ h5.main-card {
 .footer-link {
     font-size: .75rem;
 }
+.square {
+    height: 10px;
+    width: 10px;
+    background-color: #990800;
+    display: inline-block;
+}

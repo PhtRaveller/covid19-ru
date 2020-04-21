@@ -71,6 +71,16 @@ def save_rendered_page(page_name, rendered):
         f.write(rendered)
 
 
+def get_swabs_data(clean=True):
+    """Get swabs data from Rospotrebnadzor data."""
+
+    root_dir = pathlib.Path(__file__).parent.parent
+    data = pd.read_csv(root_dir.joinpath(cfg.SWABSDATA_CLEAN if clean else cfg.SWABSDATA))
+    data["date"] = pd.to_datetime(data["date"], dayfirst=True)
+    data = data.set_index("date")
+    return data.sort_index()
+
+
 def get_data_by_key(keys, ext=".csv", pandas=True, dt_cols=["date"], set_index=None, sort_by=None):
     """Read data from disk."""
 

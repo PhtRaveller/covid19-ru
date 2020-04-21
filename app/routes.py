@@ -27,12 +27,14 @@ def index():
 
     city = "Россия"
 
-    main_links = []
-    secondary_links = filter_secondary_links(city)
+    main_links = filter_secondary_links(city)
+    secondary_links = []
 
     # Getting data
     full_data = data.get_newest_data()
     country_data_full, country_data = data.get_region_data(full_data, city)
+    swabs_data = data.get_swabs_data()
+    swabs_data = swabs_data.join(country_data_full["total"], how="outer")
 
     # Cases statistics block
     stats = []
@@ -64,14 +66,8 @@ def index():
     cases_log_plot = plotting.plot_region(country_data_full, city, log_y=True)
 
     # Swabs plots
-    swabs_plot = plotting.plot_region(country_data_full, city,
-                                      plot_cols=["swabs"],
-                                      legend_map=["тыс. тестов проведено"],
-                                      bar=True)
-    swabs_log_plot = plotting.plot_region(country_data_full, city, log_y=True,
-                                          plot_cols=["swabs"],
-                                          legend_map=["тыс. тестов проведено"],
-                                          bar=True)
+    swabs_plot = plotting.plot_swabs(swabs_data, city)
+    swabs_log_plot = plotting.plot_swabs(swabs_data, city, x_col="total")
 
     # Getting Bokeh components
     script, div = components({"cases": cases_plot, "cases_log": cases_log_plot,
