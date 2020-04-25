@@ -141,13 +141,22 @@ MSK_HOSPITALS = [{"key": "gkb40",
                   "name": "НМХЦ им. Н. И. Пирогова",
                   "link": "http://www.pirogov-center.ru/",
                   "cmo": "Виталий Геннадьевич Гусаров",
-                  "address": " ул. Нижняя Первомайская, д. 70",
+                  "address": "ул. Нижняя Первомайская, д. 70",
                   "fields": [{"key": "total", "name": "всего на лечении", "glyph": "bar", "alpha": 0.25},
                              {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"},
                              {"key": "total_vent", "name": "всего на ИВЛ", "glyph": "line"},
                              {"key": "total_icu", "name": "в ОРИТ", "glyph": "line"},
                              {"key": "covid_vent", "name": "подтвержденных CoVID-19 на ИВЛ", "glyph": "line"},
                              {"key": "covid_suspected", "name": "предполагаемых CoVID-19", "glyph": "line"}
+                             ]
+                  },
+                 {"key": "mccid",
+                  "name": 'МКЦИБ "Вороновское"' ,
+                  "link": "https://demikhova.ru/",
+                  "cmo": "Сергей Николаевич Переходов",
+                  "address": "Вороновское поселение, д. Голохвастово",
+                  "fields": [{"key": "total", "name": "всего на лечении", "glyph": "bar", "alpha": 0.25},
+                             {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"}
                              ]
                   },
                  ]
