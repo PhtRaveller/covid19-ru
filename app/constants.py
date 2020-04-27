@@ -16,7 +16,7 @@ LEGEND_MAP = ["выявлено", "умерло", "выздоровело"]
 # Swabs categories
 SWABS_CATEGORIES = ["swabs_clean", "swabs_derived_daily"]
 SWABS_LEGEND_MAP = ["тестов всего", "выявлено"]
-SWABS_RANGE = (10000, 3000000)
+SWABS_RANGE = (10000, 3500000)
 SWABS_ALPHA = 50
 SWABS_START_DATE = "2020-03-20"
 SWABS_SIZE = 3000
@@ -98,6 +98,7 @@ MSK_HOSPITALS = [{"key": "gkb40",
                              {"key": "covid", "name": "подтверждено CoVID-19"},
                              {"key": "total_vent", "name": "на ИВЛ", "glyph": "line"},
                              {"key": "total_icu", "name": "в ОРИТ", "glyph": "line"},
+                             {"key": "total_oxygen", "name": "с кислородной поддержкой", "glyph": "line"},
                              {"key": "pneumonia", "name": "внебольничная пневмония"}
                              ]
                   },
@@ -156,7 +157,8 @@ MSK_HOSPITALS = [{"key": "gkb40",
                   "cmo": "Сергей Николаевич Переходов",
                   "address": "Вороновское поселение, д. Голохвастово",
                   "fields": [{"key": "total", "name": "всего на лечении", "glyph": "bar", "alpha": 0.25},
-                             {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"}
+                             {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"},
+                             {"key": "total_oxygen", "name": "с кислородной поддержкой", "glyph": "line"}
                              ]
                   },
                  ]
