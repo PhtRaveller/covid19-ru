@@ -103,6 +103,8 @@ def plot_region(ds, city,
 
     if set_yticks:
         p.yaxis[0].formatter = NumeralTickFormatter(format="0 %")
+    else:
+        p.yaxis[0].formatter = NumeralTickFormatter(format="0a")
 
     # Setting legend
     p.legend.location = legend_loc
