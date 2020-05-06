@@ -18,8 +18,8 @@
     </div>
     {% for hospital in hospitals %}
     <div class="row mt-4">
-        <div class="col-sm-3">
-            <h5><a class="nav-link pl-0 pt-0" target="blank" href="{{ hospital.link }}">{{ hospital.name }}</a></h5>
+        <div class="col-sm-4">
+            <h5><a class="nav-link pl-0 pt-0" target="blank" href="{{ hospital.link }}">{{ hospital.name|safe}}</a></h5>
         </div>
         <div class="col-sm-4 pb-0">
             <span class="blue-font" style="font-weight: 400;">Главврач:</span> {{ hospital.cmo }}
