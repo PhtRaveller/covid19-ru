@@ -16,7 +16,7 @@ LEGEND_MAP = ["выявлено", "умерло", "выздоровело"]
 # Swabs categories
 SWABS_CATEGORIES = ["swabs_clean", "swabs_derived_daily"]
 SWABS_LEGEND_MAP = ["тестов всего", "выявлено"]
-SWABS_RANGE = (10000, 5000000)
+SWABS_RANGE = (10000, 6000000)
 SWABS_ALPHA = 50
 SWABS_START_DATE = "2020-03-20"
 SWABS_SIZE = 3000
