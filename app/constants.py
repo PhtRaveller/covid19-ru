@@ -173,12 +173,13 @@ MSK_HOSPITALS = [{"key": "gkb40",
                              ]
                   },
                  {"key": "mccid",
-                  "name": 'МКЦИБ "Вороновское"',
+                  "name": 'МКЦИБ&nbsp"Вороновское"',
                   "link": "https://demikhova.ru/",
                   "cmo": "Сергей Николаевич Переходов",
                   "address": "Вороновское поселение, д. Голохвастово",
                   "fields": [{"key": "total", "name": "всего на лечении", "glyph": "bar", "alpha": 0.25},
                              {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"},
+                             {"key": "total_vent", "name": "всего на ИВЛ", "glyph": "line"},
                              {"key": "total_oxygen", "name": "с кислородной поддержкой", "glyph": "line"}
                              ]
                   },
