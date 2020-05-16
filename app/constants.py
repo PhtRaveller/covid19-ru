@@ -16,10 +16,10 @@ LEGEND_MAP = ["выявлено", "умерло", "выздоровело"]
 # Swabs categories
 SWABS_CATEGORIES = ["swabs_clean", "swabs_derived_daily"]
 SWABS_LEGEND_MAP = ["тестов всего", "выявлено"]
-SWABS_RANGE = (10000, 7000000)
-SWABS_ALPHA = 50
+SWABS_RANGE = (10000, 7500000)
+SWABS_ALPHA = 25
 SWABS_START_DATE = "2020-03-20"
-SWABS_SIZE = 3000
+SWABS_SIZE = 6000
 SWABS_DELAY = -1
 
 # Colors
@@ -120,10 +120,10 @@ MSK_HOSPITALS = [{"key": "gkb40",
                   "cmo": "Светлана Васильевна Краснова",
                   "address": "8-я ул. Соколиной горы, д. 15",
                   "fields": [{"key": "total", "name": "всего на лечении", "glyph": "bar", "alpha": 0.25},
-                             {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"},
-                             {"key": "total_vent", "name": "всего на ИВЛ", "glyph": "line"},
-                             {"key": "covid_icu", "name": "подтвержденных CoVID-19 в ОРИТ", "glyph": "line"},
-                             {"key": "covid_vent", "name": "подтвержденных CoVID-19 на ИВЛ", "glyph": "line"},
+                             {"key": "covid", "name": "CoVID-19 (всего)", "glyph": "line"},
+                             {"key": "covid_confirmed", "name": "CoVID-19 (лабораторно подтвержденных)", "glyph": "line"},
+                             {"key": "covid_icu", "name": "CoVID-19 в ОРИТ", "glyph": "line"},
+                             {"key": "covid_vent", "name": "CoVID-19 на ИВЛ", "glyph": "line"},
                              {"key": "covid_children", "name": "детей с CoVID-19", "glyph": "line"}
                              ]
                   },
