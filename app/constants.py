@@ -111,6 +111,7 @@ MSK_HOSPITALS = [{"key": "gkb40",
                              {"key": "covid", "name": "подтверждено CoVID-19", "glyph": "line"},
                              {"key": "total_vent", "name": "на ИВЛ", "glyph": "line"},
                              {"key": "total_icu", "name": "в ОРИТ", "glyph": "line"},
+                             {"key": "total_oxygen", "name": "с кислородной поддержкой", "glyph": "line"},
                              {"key": "pneumonia", "name": "внебольничная пневмония", "glyph": "line"}
                              ]
                   },
