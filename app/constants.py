@@ -12,12 +12,12 @@ CATEGORIES_STYLES = {
     "recovered": {"color_class": "green-font", "text": "выздоровело", "icon_class": "fa-heart"},
     "swabs": {"color_class": "blue-font", "text": "тыс. тестов проведено", "icon_class": "fa-vial"}
     }
-LEGEND_MAP = ["выявлено", "умерло", "выздоровело"]
+LEGEND_MAP = ["выявлено", "умерло", "выздоровело", "активных"]
 
 # Swabs categories
 SWABS_CATEGORIES = ["swabs_clean", "swabs_derived_daily"]
 SWABS_LEGEND_MAP = ["тестов всего", "выявлено"]
-SWABS_RANGE = (10000, 8500000)
+SWABS_RANGE = (10000, 9000000)
 SWABS_ALPHA = 25
 SWABS_START_DATE = "2020-03-20"
 SWABS_SIZE = 6000

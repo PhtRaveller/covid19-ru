@@ -62,8 +62,12 @@ def index():
     map_plot = plotting.plot_map(map_data)
 
     # Cases plots
-    cases_plot = plotting.plot_region(country_data_full, city)
-    cases_log_plot = plotting.plot_region(country_data_full, city, log_y=True)
+    country_data_full["active"] = (country_data_full["total"]
+                                   - country_data_full["recovered"]
+                                   - country_data_full["died"])
+    cases_plot = plotting.plot_region(country_data_full, city, plot_cols=cts.CATEGORIES[:3] + ["active"])
+    cases_log_plot = plotting.plot_region(country_data_full, city, log_y=True,
+                                          plot_cols=cts.CATEGORIES[:3] + ["active"])
 
     # Swabs plots
     swabs_plot = plotting.plot_swabs(swabs_data, city)
@@ -113,8 +117,12 @@ def moscow():
         stats.append(style)
 
     # Cases plots
-    cases_plot = plotting.plot_region(moscow_data_full, city)
-    cases_log_plot = plotting.plot_region(moscow_data_full, city, log_y=True)
+    moscow_data_full["active"] = (moscow_data_full["total"]
+                                  - moscow_data_full["recovered"]
+                                  - moscow_data_full["died"])
+    cases_plot = plotting.plot_region(moscow_data_full, city, plot_cols=cts.CATEGORIES[:3] + ["active"])
+    cases_log_plot = plotting.plot_region(moscow_data_full, city, log_y=True,
+                                          plot_cols=cts.CATEGORIES[:3] + ["active"])
 
     # Transport plots
     transport_data = data.get_data_by_key([cts.MSK_DIR, "transport"], sort_by="date", set_index="date")
