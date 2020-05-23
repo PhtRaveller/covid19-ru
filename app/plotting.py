@@ -1,4 +1,3 @@
-import numpy as np
 from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.models import GeoJSONDataSource
@@ -258,6 +257,164 @@ def plot_map(ds, palette=cts.MAP_PALLETE, breeze=cfg.MAP_BREEZE):
     wheel_zoom = WheelZoomTool(zoom_on_axis=False)
     p.add_tools(wheel_zoom)
     p.toolbar.active_scroll = wheel_zoom
+
+    # Applying theme
+    doc = curdoc()
+    doc.theme = cfg.THEME
+    return p
+
+
+def plot_cases_bar(cases_pos, city, cases_neg=None,
+                   pos_cols=None, neg_cols=None, 
+                   dt_col="date", fillna=0,
+                   dt_fmt="%d-%m-%Y", fmt="{0,0}",
+                   pos_legend_map=cts.DAILY_LEGEND_MAP,
+                   neg_legend_map=cts.DAILY_LEGEND_MAP,
+                   pos_color_ramp=cts.AGES_COLOR_RAMP,
+                   neg_color_ramp=cts.DISCHARGES_COLOR_RAMP,
+                   alpha=0.7, line_width=2, line_color="white",
+                   hatch_pattern="x", hatch_color="white",
+                   suffix="",
+                   bar_width=cts.DAILY_WIDTH,
+                   total_col="total",
+                   height=cfg.MAX_MAIN_HEIGHT, height_policy="fit",
+                   width=cfg.MAX_MAIN_WIDTH, width_policy="fixed",
+                   additional_tools=[], legend_loc="top_left",
+                   xaxis_ticks=None, yrange=None, set_yticks=False, skip_legend=False):
+    """Make a (stacked) bar plot for a region."""
+
+    # We create the stacked bar manually for more flexibility in tooltips
+    # Prepare positive part
+    if cases_pos is not None:
+        cases_pos = cases_pos.copy()
+
+        # Fixing possible naming issues for Bokeh
+        cases_pos = cases_pos.rename(lambda cl: cl.replace("+", ""), axis=1)
+        cases_pos = cases_pos.rename(lambda cl: cl.replace("%", "_"), axis=1)
+        cases_pos = cases_pos.rename(lambda cl: cl.replace(" ", "_"), axis=1)
+        cases_pos = cases_pos.rename(lambda cl: cl.replace("-", "_"), axis=1)
+        pos_legend_map = {k.replace(" ", "_").replace("%", "_").replace("-", "_").replace("+", ""): v
+                          for k, v in pos_legend_map.items()}
+
+        pos_cols = cases_pos.columns.tolist() if pos_cols is None else pos_cols
+        pos_cols = [cl.replace(" ", "_").replace("%", "_").replace("-", "_").replace("+", "")
+                    for cl in pos_cols]
+        cases_pos = cases_pos.reset_index()
+
+        if fillna is not None:
+            cases_pos.fillna(0, inplace=True)
+
+        for ci, cl in enumerate(pos_cols[1:]):
+            cases_pos[f"{cl}_bottom"] = cases_pos[pos_cols[:(ci+1)]].sum(axis=1)
+
+        for ci, cl in enumerate(pos_cols[1:]):
+            cases_pos[f"{cl}_top"] = cases_pos[cl] + cases_pos[f"{cl}_bottom"]
+
+        cases_pos[f"{pos_cols[0]}_bottom"] = 0
+        cases_pos[f"{pos_cols[0]}_top"] = cases_pos[pos_cols[0]]
+
+        cases_pos["date_str"] = cases_pos[dt_col].dt.strftime(dt_fmt)
+        cases_pos["total"] = cases_pos[pos_cols].sum(axis=1)
+
+    # Prepare positive part
+    if cases_neg is not None:
+        cases_neg = cases_neg.copy()
+
+        # Fixing possible naming issues for Bokeh
+        cases_neg = cases_neg.rename(lambda cl: cl.replace("+", ""), axis=1)
+        cases_neg = cases_neg.rename(lambda cl: cl.replace("%", "_"), axis=1)
+        cases_neg = cases_neg.rename(lambda cl: cl.replace(" ", "_"), axis=1)
+        cases_neg = cases_neg.rename(lambda cl: cl.replace("-", "_"), axis=1)
+        neg_legend_map = {k.replace(" ", "_").replace("%", "_").replace("-", "_").replace("+", ""): v
+                          for k, v in neg_legend_map.items()}
+
+        neg_cols = cases_neg.columns.tolist() if neg_cols is None else neg_cols
+        neg_cols = [cl.replace(" ", "_").replace("%", "_").replace("-", "_").replace("+", "")
+                    for cl in neg_cols]
+        cases_neg = cases_neg.reset_index()
+        if fillna is not None:
+            cases_neg.fillna(0, inplace=True)
+
+        cases_neg["total"] = cases_neg.sum(axis=1)
+
+        for ci, cl in enumerate(neg_cols[1:]):
+            cases_neg[f"{cl}_bottom"] = cases_neg[neg_cols[:(ci+1)]].sum(axis=1) - cases_neg["total"]
+
+        for ci, cl in enumerate(neg_cols[1:]):
+            cases_neg[f"{cl}_top"] = cases_neg[cl] + cases_neg[f"{cl}_bottom"]
+
+        cases_neg[f"{neg_cols[0]}_bottom"] = - cases_neg["total"]
+        cases_neg[f"{neg_cols[0]}_top"] = cases_neg[neg_cols[0]] - cases_neg["total"]
+
+        cases_neg["date_str"] = cases_neg[dt_col].dt.strftime(dt_fmt)
+
+    tools = ["save"]
+
+    p = figure(x_axis_type="datetime", tools=tools,
+               plot_height=height, max_height=height, min_height=height,
+               height_policy=height_policy,
+               plot_width=width, max_width=width,
+               width_policy=width_policy,
+               active_drag=None)
+    p.toolbar.logo = None
+
+    if cases_pos is not None:
+        for ci, cl in enumerate(pos_cols):
+            bar_params = dict(color=pos_color_ramp[ci], width=bar_width,
+                              alpha=alpha, line_color=line_color)
+
+            if not skip_legend:
+                bar_params["legend_label"] = pos_legend_map[cl]
+
+            vb = p.vbar(x=dt_col, bottom=f"{cl}_bottom", top=f"{cl}_top", source=cases_pos, **bar_params)
+            tooltip_header = cts.CASES_TOOLTIP.format(city=city)
+            tooltip_footer = cts.DAILY_TOOLTIP_FOOTER.format(value_type=data.capitalize(pos_legend_map[cl]),
+                                                             col=f"{cl}{suffix}",
+                                                             fmt=fmt,
+                                                             total_col=total_col)
+            hover = HoverTool(tooltips=tooltip_header + tooltip_footer, renderers=[vb],
+                              toggleable=False)
+            p.add_tools(hover)
+
+    if cases_neg is not None:
+        for ci, cl in enumerate(neg_cols):
+            bar_params = dict(color=neg_color_ramp[ci], width=bar_width,
+                              alpha=alpha, line_color=line_color,
+                              hatch_pattern=hatch_pattern, hatch_color=hatch_color)
+
+            if not skip_legend:
+                bar_params["legend_label"] = neg_legend_map[cl]
+
+            vb = p.vbar(x=dt_col, bottom=f"{cl}_bottom", top=f"{cl}_top", source=cases_neg, **bar_params)
+            tooltip_header = cts.CASES_TOOLTIP.format(city=city)
+            tooltip_footer = cts.DISCHARGES_TOOLTIP_FOOTER.format(value_type=data.capitalize(neg_legend_map[cl]),
+                                                                  col=f"{cl}{suffix}",
+                                                                  fmt=fmt,
+                                                                  total_col=total_col)
+            hover = HoverTool(tooltips=tooltip_header + tooltip_footer, renderers=[vb],
+                              toggleable=False)
+            p.add_tools(hover)
+
+    # Setting ticks
+    p.xaxis[0].formatter = DatetimeTickFormatter(days=['%d %b'])
+
+    if set_yticks:
+        p.yaxis[0].formatter = NumeralTickFormatter(format="0 %")
+    else:
+        p.yaxis[0].formatter = NumeralTickFormatter(format="0a")
+
+    # Setting legend
+    p.legend.location = legend_loc
+    p.legend.background_fill_alpha = 0.4
+
+    # Setting X-ticker
+    if xaxis_ticks is not None:
+        p.xaxis[0].ticker.desired_num_ticks = xaxis_ticks
+
+    # Setting Y-axis range
+    if yrange is not None:
+        p.y_range.start = yrange[0]
+        p.y_range.end = yrange[1]
 
     # Applying theme
     doc = curdoc()

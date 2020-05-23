@@ -150,6 +150,32 @@ def moscow():
         tr_stats.append({"name": category["name"].capitalize(),
                          "value": transport_data_latest[category["key"]]})
 
+    # Age distribution
+    age_data = data.get_data_by_key([cts.MSK_DIR, "age"], sort_by="date", set_index="date")
+    raw_ages_cols = age_data.columns[1:-4:2].tolist()
+    raw_perc_cols = age_data.columns[2:-4:2].tolist()
+    raw_ages_cols = ["children"] + raw_ages_cols
+    raw_perc_cols = ["children%"] + raw_perc_cols
+
+    daily_stats = moscow_data_full[cts.DAILY_DISCHARGE_CATEGORIES].diff().loc[age_data.index]
+
+    daily_plot = plotting.plot_cases_bar(age_data[raw_ages_cols], city,
+                                         cases_neg=daily_stats, yrange=cts.DAILY_RANGE,
+                                         width=cfg.MAX_MAIN_WIDTH * 2,
+                                         legend_loc="bottom_left")
+    for cl in raw_perc_cols:
+        age_data[f"{cl}_perc"] = age_data[cl] / 100.
+
+    age_plot = plotting.plot_cases_bar(age_data.rename({"total": "total_cases"}, axis=1),
+                                       city, pos_cols=raw_perc_cols,
+                                       width=cfg.MAX_MAIN_WIDTH * 2, height=cfg.MIN_MAIN_HEIGHT,
+                                       skip_legend=True,
+                                       total_col="total_cases",
+                                       fmt="{0.0 %}",
+                                       suffix="_perc")
+    plots["daily_plot"] = daily_plot
+    plots["age_plot"] = age_plot
+
     # Hospitals
     hospitals = []
     for hospital in cts.MSK_HOSPITALS:

@@ -15,6 +15,7 @@ THEME_FILE = "static/theme.yaml"
 THEME = Theme(filename=ROOT_DIR.joinpath(THEME_FILE))
 
 MAX_MAIN_HEIGHT = 400
+MIN_MAIN_HEIGHT = 200
 MAX_MAIN_WIDTH = 600
 DATE_WIDTH = pd.Timedelta(hours=12)
 MAP_BREEZE = 0.05

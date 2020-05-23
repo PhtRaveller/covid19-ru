@@ -1,3 +1,4 @@
+import pandas as pd
 from bokeh.palettes import Reds
 
 REGIONAL_LINKS = [{"name": "Россия", "link": "/"},
@@ -25,7 +26,27 @@ SWABS_DELAY = -1
 # Colors
 COLOR_RAMP = ["#073763", "#990800", "#38761d", "#417ab0", "#e50b00", "#85c26b"]
 MAP_PALLETE = Reds[9]
+AGES_COLOR_RAMP = ["#38761d", "#417ab0", "#073763", "#e50b00", "#990800"]
+DISCHARGES_COLOR_RAMP = ["#990800", "#38761d"]
 
+# Daily plots
+DAILY_LEGEND_MAP = {"18-45": "в возрасте от 18 до 45 лет",
+                    "46-65": "в возрасте от 46 до 65 лет",
+                    "66-79": "в возрасте от 66 до 79 лет",
+                    "80+": "в возрасте старше 80 лет",
+                    "children": "детей",
+                    "18-45%": "в возрасте от 18 до 45 лет",
+                    "46-65%": "в возрасте от 46 до 65 лет",
+                    "66-79%": "в возрасте от 66 до 79 лет",
+                    "80+%": "в возрасте старше 80 лет",
+                    "children%": "детей",
+                    "died": "умерло",
+                    "recovered": "выздоровело"}
+DAILY_WIDTH = pd.Timedelta(hours=16)
+DAILY_DISCHARGE_CATEGORIES = ["died", "recovered"]
+DAILY_RANGE = (-7000, 7000)
+
+# Tooltips
 CASES_TOOLTIP = """<div class="plot-tooltip">
     <h4>{city}</h4>
     <div>
@@ -67,6 +88,24 @@ SWABS_TOOLTIP = """<div class="plot-tooltip">
     </div>
     <div>
         <span style="font-weight: bold;">% положительных (за все время): </span>@positive{0.0 %} <div class="square" style="opacity: @alpha"></div>
+    </div>
+</div>
+"""
+
+DAILY_TOOLTIP_FOOTER = """<div>
+        <span style="font-weight: bold;">Выявлено всего: </span>@{total_col}{{0,0}}
+    </div>
+    <div>
+        <span style="font-weight: bold;">{value_type}: </span>@{col}{fmt}
+    </div>
+</div>
+"""
+
+DISCHARGES_TOOLTIP_FOOTER = """<div>
+        <span style="font-weight: bold;">Выбыло: </span>@{total_col}{{0,0}}
+    </div>
+    <div>
+        <span style="font-weight: bold;">{value_type}: </span>@{col}{fmt}
     </div>
 </div>
 """
