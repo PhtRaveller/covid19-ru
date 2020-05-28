@@ -44,7 +44,7 @@ DAILY_LEGEND_MAP = {"18-45": "в возрасте от 18 до 45 лет",
                     "recovered": "выздоровело"}
 DAILY_WIDTH = pd.Timedelta(hours=16)
 DAILY_DISCHARGE_CATEGORIES = ["died", "recovered"]
-DAILY_RANGE = (-7000, 7000)
+DAILY_RANGE = (-9000, 9000)
 
 # Tooltips
 CASES_TOOLTIP = """<div class="plot-tooltip">
